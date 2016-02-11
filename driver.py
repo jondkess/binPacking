@@ -1,6 +1,6 @@
 # ----------------------------------------------
 # CSCI 338, Spring 2016, Bin Packing Assignment
-# Author: John Paxton
+# Author: Jonathan Kessler
 # Last Modified: January 19, 2016
 # ----------------------------------------------
 
