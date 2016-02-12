@@ -28,6 +28,7 @@ import math
 hasPlaced = []
 placement = []
 sortedRectangles = []
+j = 0
 currentRow = []
 
 def find_naive_solution(rectangles):
@@ -93,12 +94,11 @@ def sortRects(rectangles):
         hasPlaced.insert(0, False)
         i += 1
         sortedRect = sorted(sortedRectangles, key=lambda tup: tup[1], reverse=True)
-
     return sortedRect
 
 def placeBoxes(sortedRectangles, sideLength):
     yPosition = 0
-    j = 0
+    global j
 
     while(1):
         xPosition = 0
@@ -111,13 +111,14 @@ def placeBoxes(sortedRectangles, sideLength):
                 currentRow.append((sortedRectangles[j], xPosition, yPosition))
                 placement.insert(0,coordinate)
                 hasPlaced[j] = True
+                j += 1
 
-            j += 1
+
 
             if ((len(sortedRectangles) == j)):
                 return placement
 
-        #fillRow(currentRow, j)
+        fillRow(currentRow, j)
 
 
 
@@ -137,17 +138,19 @@ def fillRow(currentRow, numIntoArr):
         fillSection(currentRow[num], currentRow[num + 1], numIntoArr)
 
 def fillSection(first, second, numIntoArr):
+    global j
     sectionWidth = second[0][0]
     sectionHeight = first[0][1] - second[0][1]
     xSectionToFill = sectionWidth
     xFilled = 0
 
-    if sectionHeight >= 3:
+    if sectionHeight >= 1:
             fit = [rectangle for rectangle in sortedRectangles if (rectangle[1] + 1) < sectionHeight and (rectangle[0] + 1) < xSectionToFill and hasPlaced[rectangle[2]] == False]
             for num in range(0, len(fit)):
                 if fit[num][0] < xSectionToFill:
-                    coordinate = (second[1] + xFilled + 1, second[2] + second[0][1] + 1, fit[num][2])
+                    coordinate = (second[1] + xFilled, second[2] + second[0][1], fit[num][2])
                     placement.insert(0, coordinate)
-                    hasPlaced[fit[0][2]] = True
+                    hasPlaced[fit[num][2]] = True
+                    j += 1
                     xSectionToFill -= fit[num][0]
                     xFilled += fit[num][0]
